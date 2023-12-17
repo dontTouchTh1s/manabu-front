@@ -47,7 +47,7 @@ function Courses() {
     function handleSearch() {
         setData({
             query: searchCourseTitle,
-            categoryIds: inputSearchCourseCategories,
+            categoryIds: searchCourseCategories.map(scc => scc.id),
             take: 10
         })
     }
