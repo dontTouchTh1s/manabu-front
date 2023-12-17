@@ -21,7 +21,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 function CourseCard({course, forTeacher = false}) {
     const user = useContext(userContext);
-    const isCurrentTeacherCourse = course.userId === user.current.appBarUser.teacher.id;
+    const isCurrentTeacherCourse = user.current.appBarUser.teacher && course.userId === user.current.appBarUser.teacher.id;
     const [likes, setLikes] = useState(course.likes.length);
     const [liked, setLiked] = useState(course.likes.filter(lk => lk.userId === user.current.appBarUser.id).length > 0);
 
