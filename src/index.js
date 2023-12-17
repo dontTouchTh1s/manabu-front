@@ -30,6 +30,7 @@ import Logout from "./Api/Logout";
 import EditSection from "./Pages/EditSection/EditSection";
 import EditProfile from "./Pages/EditProfile/EditProfile";
 import StudentViewSection from "./Pages/StudentViewSection/StudentViewSection";
+import RecommendedCourses from "./Pages/RecommendedCourses/RecommendedCourses";
 
 
 const browserRouter = createBrowserRouter([
@@ -71,6 +72,11 @@ const browserRouter = createBrowserRouter([
                     {
                         path: '/courses',
                         element: <ProtectedRoute noNavigate><ShowAllCourses/></ProtectedRoute>,
+                        loader: protectedRouteLoader
+                    },
+                    {
+                        path: '/courses/recommended',
+                        element: <ProtectedRoute noNavigate><RecommendedCourses/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
                     {

@@ -29,24 +29,33 @@ function ChatBox({teacher, user}) {
         setSocket(io.connect('http://localhost:8080/api/chat'));
     }
 
+    console.log(socket)
+
     async function chatList(date) {
         await socket.emit('chatsList', date);
     }
 
     useEffect(() => {
         if (socket) {
-            if (!chat) {
-                let data = {teacherId: teacher.id, userId: user.id};
-                chatList(data);
-            }
+            let data = {teacherId: teacher.id, userId: user.id};
+            chatList(data);
+
         }
     }, [socket]);
 
     useEffect(() => {
         if (socket) {
-            socket.on('chatsList', (data) => {
-                console.log(data)
-                setChat(data.filter(cht => cht.user.id === user.id && cht.teacher.id === teacher.id)[0])
+            socket.on('chatsList', async (data) => {
+                const myChat = data.filter(cht => cht.user.id === user.id && cht.teacher.id === teacher.id)[0];
+                if (!myChat) {
+                    const messageData = {
+                        teacherId: teacher.id,
+                        userId: user.id,
+                        content: ''
+                    };
+                    await socket.emit('createMsg', JSON.stringify(messageData));
+                }
+                setChat(myChat)
             })
         }
     }, [socket]);

@@ -8,7 +8,7 @@ import {
     Snackbar,
     Stack,
     Typography,
-    Alert, Button, styled, Skeleton
+    Alert, Button, styled, Skeleton, TextField
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import Api from "../../Api/Api";
@@ -30,6 +30,7 @@ import getCookie from "../../Functions/GetCookie/GetCookie";
 import IconBox from "../../Components/IconBox";
 import LoadingCircle from "../../Components/LoadingCircle";
 import userContext from "../../Contexts/UserContext";
+import useComments from "../../Hooks/useComments";
 
 const style = {
     position: 'absolute',
@@ -48,9 +49,12 @@ async function fetcher(url) {
 }
 
 function ViewCourse() {
+    const [commentContent, setCommentContent] = useState('');
+
     // Other
     const [expanded, setExpanded] = useState(true);
     const [takeCourseLoading, setTakeCourseLoading] = useState(false);
+    const [commentContentError, setCommentContentError] = useState('');
 
     // Snackbar
     const [snackbarStatus, setSnackbarStatus] = useState({
@@ -68,6 +72,14 @@ function ViewCourse() {
         data: course,
         isLoading: courseIsLoading
     } = useSWRImmutable('/course/' + courseId, fetcher, {revalidateOnMount: true, revalidateOnFocus: true})
+
+    const {comments, commentsIsLoading} = useComments({
+        take: 1000,
+        skip: 0,
+        target: 'courseId',
+        targetId: courseId,
+
+    });
 
     function handleSnackBarClose(event, reason) {
         if (reason === 'clickaway') {
@@ -126,6 +138,27 @@ function ViewCourse() {
     async function handleOnLogin() {
         setLoginModalOpen(false);
         await handleTakeCourse();
+    }
+
+    async function handleComment(parentId = null) {
+        if (commentContent === '') {
+            setCommentContentError('لطفا یک متن وارد کنید.')
+            return;
+        } else {
+            setCommentContentError('');
+        }
+        try {
+            const data = {
+                content: commentContent,
+                isPublished: true,
+                targetId: courseId,
+                target: 'course'
+            };
+            await Api.post('/comment/create', data);
+        } catch (e) {
+            console.log(e)
+
+        }
     }
 
     if (!courseIsLoading) {
@@ -230,6 +263,73 @@ function ViewCourse() {
 
 
                                     }
+                                </AccordionDetails>
+                            </Accordion>
+                            <Accordion
+                                expanded={expanded}
+                                onChange={() => setExpanded(!expanded)}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon/>}
+                                    aria-controls="panel1a-content"
+                                    id="panel1a-header">
+                                    <Typography component="h3" variant="h6" sx={{textAlign: 'left'}}>
+                                        {'نظرات'}
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Grid container spacing={{xs: 1, sm: 2}}>
+                                        <Grid xs={12} container>
+                                            {
+                                                !commentsIsLoading && comments ?
+                                                    comments.map(cm =>
+                                                        <Grid xs={12}>
+                                                            <Typography component="p" variant="subtitle1"
+                                                                        sx={{textAlign: 'left'}}>
+                                                                {cm.user.fName + ' ' + cm.user.lName}
+                                                            </Typography>
+                                                            <Box sx={{pl: 3}}>
+                                                                <Typography component="p" variant="body1"
+                                                                            sx={{textAlign: 'left'}}>
+                                                                    {cm.content}
+                                                                </Typography>
+                                                            </Box>
+                                                            <Divider/>
+                                                        </Grid>
+                                                    ) :
+                                                    <Grid xs={12}>
+                                                        <Typography component="h3" variant="body1"
+                                                                    sx={{textAlign: 'left'}}>
+                                                            هیچ نظری ثبت نشده است، اولین نفر باشید.
+                                                        </Typography>
+                                                    </Grid>
+
+                                            }
+                                        </Grid>
+                                        <Grid xs={12}>
+                                            <TextField
+                                                fullWidth
+                                                error={commentContentError !== ''}
+                                                helperText={commentContentError}
+                                                placeholder={'متن نظر'}
+                                                label={'متن نظر'}
+                                                multiline
+                                                value={commentContent}
+                                                onChange={(e) => {
+                                                    setCommentContent(e.target.value);
+                                                }}
+                                                minRows={4}
+                                                maxRows={5}
+                                                required
+                                            >
+                                            </TextField>
+                                        </Grid>
+
+                                        <Grid xs={12} sm={6} md={3}>
+                                            <Button onClick={handleComment} variant={'outlined'}>
+                                                ثبت نظر
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
                                 </AccordionDetails>
                             </Accordion>
                         </Stack>

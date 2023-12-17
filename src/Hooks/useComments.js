@@ -4,7 +4,7 @@ import useSWRImmutable from "swr/immutable";
 import {useEffect, useState} from "react";
 
 async function fetcher([url, params]) {
-    return Api.post(url, params).then(response => response.data.like);
+    return Api.post(url, params).then(response => response.data.comments);
 }
 
 function useComments(params) {

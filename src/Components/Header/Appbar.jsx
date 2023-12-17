@@ -51,18 +51,9 @@ function MenuAppBar() {
                 <Toolbar sx={{
                     justifyContent: 'space-between'
                 }}>
-                    {
-                        <DrawerHandler user={appBarUser}/>
-                    }
-                    {/*<IconButton*/}
-                    {/*    color={'onPrimary'}*/}
-                    {/*    onClick={() => {*/}
-                    {/*        navigate(-1)*/}
-                    {/*    }}*/}
-                    {/*    aria-label={'back'}>*/}
-                    {/*    <ArrowForwardIcon/>*/}
-                    {/*</IconButton>*/}
 
+                    <DrawerHandler user={appBarUser}/>
+                    
                     <UserProfileMenu user={appBarUser}/>
                 </Toolbar>
             </AppBar>

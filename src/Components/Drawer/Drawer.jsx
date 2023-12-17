@@ -17,6 +17,7 @@ import CastForEducationIcon from '@mui/icons-material/CastForEducation';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import HomeIcon from "@mui/icons-material/Home";
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import RecommendIcon from '@mui/icons-material/Recommend';
 
 const drawerWidth = 240;
 
@@ -201,7 +202,7 @@ export default function MiniDrawer({isTeacher, isOpen, onChange}) {
                     <ListItem disablePadding sx={{display: 'block'}}>
                         <Link
                             onClick={handleDrawerClose}
-                            to={'/'}
+                            to={'/courses/recommended'}
                             style={{
                                 textDecoration: 'none ',
                                 color: "inherit"
@@ -221,9 +222,9 @@ export default function MiniDrawer({isTeacher, isOpen, onChange}) {
                                         mr: open ? 3 : 'auto',
                                         justifyContent: 'center',
                                     }}>
-                                    <HomeIcon/>
+                                    <RecommendIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary={'آریا'} sx={{
+                                <ListItemText primary={'دوره های پیشنهادی'} sx={{
                                     opacity: open ? 1 : 0,
                                     color: 'inherit'
                                 }}/>
