@@ -120,6 +120,11 @@ const browserRouter = createBrowserRouter([
                         loader: protectedRouteLoader
                     },
                     {
+                        path: '/teachers/:teacherId/courses',
+                        element: <ProtectedRoute><ShowAllCourses/></ProtectedRoute>,
+                        loader: protectedRouteLoader
+                    },
+                    {
                         path: '/teachers/register',
                         element: <ProtectedRoute><CreateTeacher/></ProtectedRoute>,
                         loader: protectedRouteLoader

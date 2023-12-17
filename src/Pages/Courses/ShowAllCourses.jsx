@@ -20,7 +20,7 @@ import useCategories from "../../Hooks/useCategories";
 import LoadingCircle from "../../Components/LoadingCircle";
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from "@mui/icons-material/Add";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import userContext from "../../Contexts/UserContext";
 
 async function searcher([url, params]) {
@@ -28,6 +28,8 @@ async function searcher([url, params]) {
 }
 
 function Courses() {
+    const {teacherId} = useParams();
+
     const [searchCourseTitle, setSearchCourseTitle] = useState('');
     const [searchCourseLevel, setSearchCourseLevel] = useState('');
     const [searchCourseCategories, setSearchCourseCategories] = useState([]);
@@ -37,7 +39,8 @@ function Courses() {
     const [data, setData] = useState({
         query: searchCourseTitle,
         categoryIds: searchCourseCategories,
-        take: 10
+        take: 10,
+        teacherId
     });
     const {
         data: courses,
