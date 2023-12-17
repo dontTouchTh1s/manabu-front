@@ -17,7 +17,7 @@ async function fetcher(url) {
     return Api.get(url).then(response => response.data.sections);
 }
 
-function ManageSections() {
+function ManageSections({forStudents = false}) {
     const {courseId} = useParams();
     const navigate = useNavigate();
 
@@ -70,7 +70,7 @@ function ManageSections() {
                             sections.length !== 0 ?
                                 sections.map(sec =>
                                     <Grid key={sec.id} xs={12} sm={6} md={4}>
-                                        <SectionsCard section={sec}>
+                                        <SectionsCard section={sec} forStudent>
                                         </SectionsCard>
                                     </Grid>) :
                                 <NotDataBox>
@@ -83,15 +83,19 @@ function ManageSections() {
 
                     }
                 </Grid>
-                <Fab color="primary" variant={'extended'} aria-label="افزودن"
-                     onClick={() => {
-                         navigate('/teachers/courses/' + courseId + '/sections/create')
-                     }}
-                     sx={{position: 'fixed', bottom: 65}}
-                >
-                    <AddIcon/>
-                    ایجاد جلسه
-                </Fab>
+                {
+                    !forStudents &&
+                    <Fab color="primary" variant={'extended'} aria-label="افزودن"
+                         onClick={() => {
+                             navigate('/teachers/courses/' + courseId + '/sections/create')
+                         }}
+                         sx={{position: 'fixed', bottom: 75}}
+                    >
+                        <AddIcon/>
+                        ایجاد جلسه
+                    </Fab>
+                }
+
             </Container>
         </Box>
     );

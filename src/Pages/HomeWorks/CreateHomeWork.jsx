@@ -12,12 +12,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import {useContext, useState} from "react";
 import Api from "../../Api/Api";
 import UserContext from "../../Contexts/UserContext";
-import moment from "moment-jalaali";
-import LoadingCircle from "../../Components/LoadingCircle";
-import {DatePicker} from '@mui/x-date-pickers/DatePicker';
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import {AdapterMomentJalaali} from "@mui/x-date-pickers/AdapterMomentJalaali";
-import useCategories from "../../Hooks/useCategories";
 import {useNavigate, useOutletContext, useParams} from "react-router-dom";
 import UploadBox from "../../Components/UploadBox";
 

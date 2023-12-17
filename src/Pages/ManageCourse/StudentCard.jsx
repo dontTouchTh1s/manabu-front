@@ -1,7 +1,7 @@
 import {Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Chip, Stack, Typography} from "@mui/material";
 import React from "react";
 
-function CourseCard({student}) {
+function StudentCard({student}) {
 
     return (
         <Box>
@@ -17,4 +17,4 @@ function CourseCard({student}) {
     );
 }
 
-export default CourseCard;
+export default StudentCard;

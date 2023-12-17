@@ -19,21 +19,19 @@ import {useContext, useEffect, useState} from "react";
 function EditProfile() {
     // Form inputs
     const [email, setEmail] = useState('');
-    const [oldPassword, setOldPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [repeatPassword, setRepeatPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [alias, setAlias] = useState('');
     const [gender, setGender] = useState('MAN');
+    const [mobile, setMobile] = useState('');
+    const [birthdate, setBirthdate] = useState(null);
+
     // Error handling
     const [firstNameError, setFirstNameError] = useState('');
     const [lastNameError, setLastNameError] = useState('');
-    const [newPasswordError, setNewPasswordError] = useState('');
-    const [repeatPasswordError, setRepeatPasswordError] = useState('');
-    const [oldPasswordError, setOldPasswordError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [aliasError, setAliasError] = useState('');
+    const [mobileError, setMobileError] = useState('');
 
     // Other
     const [loginLoading, setLoginLoading] = useState(false);
@@ -49,7 +47,6 @@ function EditProfile() {
     }, [])
 
     async function fetchUser() {
-        console.log('editing profile')
         let response = await Api.get('/myProfile');
         setAlias(response.data.user.alias);
         setFirstName(response.data.user.fName);
@@ -69,32 +66,30 @@ function EditProfile() {
             alias: alias,
             gender: gender,
             email: email,
-            password: oldPassword,
-            newPassword: newPassword
+            mobile: mobile,
+            birthdate: birthdate
         };
 
         try {
             setLoginLoading(true);
-            const response = await Api.post('/updUser', data);
+            const response = await Api.put('/myInfo', data);
             setLoginLoading(false);
-            if (response.status === 200) {
-                if (response.data.status === 401) {
-                    setSnackbarType('error');
-                    setSnackbarOpen(true);
-                    setSnackbarMessage('رمز عبور وارد شده صحیح نمی باشد!');
-                } else if (response.data.status === 200) {
-                    // user.current = response.data.data;
-                } else {
-                    setSnackbarType('error');
-                    setSnackbarOpen(true);
-                    setSnackbarMessage(response.data.msg);
-                }
+            if (response.data.res === 200) {
+                setSnackbarType('success');
+                setSnackbarOpen(true);
+                setSnackbarMessage('عملیات با موفقیت انجام شد.');
+            } else {
+                setSnackbarType('error');
+                setSnackbarOpen(true);
+                setSnackbarMessage(response.data.msg);
             }
+
         } catch (error) {
             setSnackbarType('error');
             setLoginLoading(false);
             setSnackbarOpen(true);
             setSnackbarMessage('در هنگام دریافت اطلاعات مشکلی پیش آمده است.');
+            console.log(error)
         }
     }
 
@@ -102,9 +97,7 @@ function EditProfile() {
 
         let error = false;
         if (handleEmailError(email)) error = true;
-        if (handleOldPasswordError(oldPassword)) error = true;
-        if (handleNewPasswordError(newPassword)) error = true;
-        if (handleRepeatPasswordError(repeatPassword)) error = true;
+        if (handleMobileError(mobile)) error = true;
         if (handleFirstNameError(firstName)) error = true;
         if (handleLastNameError(lastName)) error = true;
         if (handleAliasError(alias)) error = true;
@@ -133,6 +126,17 @@ function EditProfile() {
         }
     }
 
+    function handleMobileError(value) {
+        const regex = new RegExp('^(\\+98|0)?9\\d{9}$');
+        if (regex.test(value)) {
+            setMobileError('');
+            return false;
+        } else {
+            setMobileError('لطفا شماره موبایل معتبر وارد کنید.');
+            return true;
+        }
+    }
+
     function handleLastNameError(value) {
         let regex = /^[\u0600-\u06FF\s]+$/;
         if (!regex.test(value)) {
@@ -145,42 +149,11 @@ function EditProfile() {
     }
 
     function handleEmailError(value) {
-        const regex = new RegExp('^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$');
-        if (!regex.test(value)) {
+        if (value === '') {
             setEmailError('یک ایمیل معتبر وارد کنید.');
             return true;
         } else {
             setEmailError('');
-            return false;
-        }
-    }
-
-    function handleRepeatPasswordError(value) {
-        if (value !== newPassword) {
-            setRepeatPasswordError('با رمز عبور وارد شده برابر نیست');
-            return true;
-        } else {
-            setRepeatPasswordError('');
-            return false;
-        }
-    }
-
-    function handleNewPasswordError(value) {
-        if (value.length < 8 && value.length !== 0) {
-            setNewPasswordError('رمز عبور حداقل 8 کاراکتر است.');
-            return true;
-        } else {
-            setNewPasswordError('');
-            return false;
-        }
-    }
-
-    function handleOldPasswordError(value) {
-        if (value.length < 8) {
-            setOldPasswordError('رمز عبور حداقل 8 کاراکتر است.');
-            return true;
-        } else {
-            setOldPasswordError('');
             return false;
         }
     }
@@ -279,93 +252,17 @@ function EditProfile() {
                     </Grid>
                     <Grid xs={12} sm={6}>
                         <TextField
-                            onBlur={(e) => handleOldPasswordError(e.target.value)}
-                            helperText={oldPasswordError}
-                            error={oldPasswordError !== ''}
+                            onBlur={(e) => handleMobileError(e.target.value)}
+                            error={mobileError !== ''}
+                            helperText={mobileError}
                             required
                             fullWidth
-                            label="رمز عبور قبلی"
-                            type={showPassword ? 'test' : 'password'}
-                            value={oldPassword}
-                            aria-required
+                            label="شماره تماس"
+                            type={'tel'}
+                            value={mobile}
                             onChange={(e) => {
-                                setOldPassword(e.target.value);
-                                handleOldPasswordError(e.target.value);
-                            }}
-                            InputProps={{
-                                endAdornment:
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={() => setShowPassword(!showPassword)}
-                                            onMouseDown={() => setShowPassword(!showPassword)}
-                                        >
-                                            {showPassword ? <VisibilityOff/> : <Visibility/>}
-                                        </IconButton>
-                                    </InputAdornment>
-                            }}
-                        />
-                    </Grid>
-                    <Grid xs={12}>
-                        <Typography component={'p'} variant={"body1"}>
-                            {'فقط در صورتی که میخواهید رمز عبور خود را تغییر دهید این دو فیلد را پر کنید.'}
-                        </Typography>
-                    </Grid>
-                    <Grid xs={12} sm={6}>
-                        <TextField
-                            onBlur={(e) => handleNewPasswordError(e.target.value)}
-                            helperText={newPasswordError}
-                            error={newPasswordError !== ''}
-                            fullWidth
-                            label="رمز عبور جدید"
-                            type={showPassword ? 'test' : 'password'}
-                            autoComplete="new-password"
-                            value={newPassword}
-                            aria-required
-                            onChange={(e) => {
-                                setNewPassword(e.target.value);
-                                handleNewPasswordError(e.target.value);
-                            }}
-                            InputProps={{
-                                endAdornment:
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={() => setShowPassword(!showPassword)}
-                                            onMouseDown={() => setShowPassword(!showPassword)}
-                                        >
-                                            {showPassword ? <VisibilityOff/> : <Visibility/>}
-                                        </IconButton>
-                                    </InputAdornment>
-                            }}
-                        />
-                    </Grid>
-                    <Grid xs={12} sm={6}>
-                        <TextField
-                            onBlur={(e) => handleRepeatPasswordError(e.target.value)}
-                            helperText={repeatPasswordError}
-                            error={repeatPasswordError !== ''}
-                            required={newPassword !== '' ? true : false}
-                            fullWidth
-                            label="تکرار رمز عبور"
-                            type={showPassword ? 'test' : 'password'}
-                            value={repeatPassword}
-                            aria-required
-                            onChange={(e) => {
-                                setRepeatPassword(e.target.value);
-                                handleRepeatPasswordError(e.target.value);
-                            }}
-                            InputProps={{
-                                endAdornment:
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={() => setShowPassword(!showPassword)}
-                                            onMouseDown={() => setShowPassword(!showPassword)}
-                                        >
-                                            {showPassword ? <VisibilityOff/> : <Visibility/>}
-                                        </IconButton>
-                                    </InputAdornment>
+                                setMobile(e.target.value);
+                                handleMobileError(e.target.value);
                             }}
                         />
                     </Grid>

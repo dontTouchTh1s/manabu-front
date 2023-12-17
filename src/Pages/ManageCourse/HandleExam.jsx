@@ -7,9 +7,6 @@ import {useCallback, useState} from "react";
 function HandleExam({courseId}) {
     const {exam, examIsLoading, examMutate} = useExam(courseId);
 
-    const [, updateState] = useState();
-    const forceUpdate = useCallback(() => updateState({}), []);
-
     return (
         <>
             {

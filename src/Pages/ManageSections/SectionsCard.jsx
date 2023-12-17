@@ -4,7 +4,7 @@ import GradingIcon from '@mui/icons-material/Grading';
 import {Link} from "react-router-dom";
 import IconBox from "../../Components/IconBox";
 
-function SectionCard({section, student = false}) {
+function SectionCard({section, forStudent = false}) {
     return (
         <Card>
             <CardHeader title={section.title}>
@@ -17,14 +17,24 @@ function SectionCard({section, student = false}) {
 
             </CardContent>
             <CardActions>
-                <Link
-                    to={'/teachers/courses/' + section.courseId + '/sections/' + section.id}>
-                    <Button size="small">ویرایش</Button>
-                </Link>
-                <Link
-                    to={'/teachers/courses/' + section.courseId + '/sections/' + section.id + '/homeworks'}>
-                    <Button size="small">تکالیف</Button>
-                </Link>
+                {
+                    forStudent ?
+                        <Link
+                            to={'/student/courses/' + section.courseId + '/sections/' + section.id}>
+                            <Button size="small" variant={'outlined'}>مشاهده</Button>
+                        </Link>
+                        :
+                        <>
+                            <Link
+                                to={'/teachers/courses/' + section.courseId + '/sections/' + section.id}>
+                                <Button size="small">ویرایش</Button>
+                            </Link>
+                            <Link
+                                to={'/teachers/courses/' + section.courseId + '/sections/' + section.id + '/homeworks'}>
+                                <Button size="small">تکالیف</Button>
+                            </Link>
+                        </>
+                }
             </CardActions>
 
         </Card>

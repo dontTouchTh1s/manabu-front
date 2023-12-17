@@ -19,17 +19,21 @@ const breadcrumbNameMap = {
     '/courses': 'دوره ها',
     '/courses/': 'مشخصات دوره',
     '/teachers': 'اساتید',
+    '/edit-profile': 'ویرایش پروفایل',
     '/teachers/courses': 'دوره های استاد',
     '/teachers/courses/': 'مدیریت دوره',
+    '/teachers/courses//chat-room': 'چت با دانشجویان دوره',
     '/teachers/courses//sections': 'جلسات دوره',
     '/teachers/courses//sections/': 'مدیریت جلسه',
-    '/teachers/courses//sections//homeworks': 'مدیریت تکالیف دوره',
+    '/teachers/courses//sections//homeworks': 'مدیریت تکالیف جلسه',
     '/teachers/': 'مشخصات استاد',
 
     // For students
     '/student': 'دانشجو',
     '/student/courses': 'دوره های ثبت نام شده',
     '/student/courses/': 'کلاس درس',
+    '/student/courses//sections': 'جلسات دوره',
+    '/student/courses//sections/': 'مشاهده جلسه',
 
 
 };

@@ -1,9 +1,9 @@
 import Grid from "@mui/material/Unstable_Grid2";
-import SectionsCard from "../ManageSections/SectionsCard";
 import NotDataBox from "../../Components/NotDataBox";
 import {Typography} from "@mui/material";
 import SectionSkeleton from "../ManageSections/SectionSkeleton";
 import useCourseSections from "../../Hooks/useCourseSections";
+import StudentSectionCard from "./StudentSectionCard";
 
 function HandleSections({courseId}) {
     const {sections, sectionsIsLoading} = useCourseSections(courseId);
@@ -15,7 +15,7 @@ function HandleSections({courseId}) {
                     sections.length !== 0 ?
                         sections.map(sec =>
                             <Grid key={sec.id} xs={12} sm={6} md={4}>
-                                <SectionsCard section={sec}/>
+                                <StudentSectionCard section={sec}/>
                             </Grid>) :
                         <Grid xs={12}>
                             <NotDataBox height={'170x'}>

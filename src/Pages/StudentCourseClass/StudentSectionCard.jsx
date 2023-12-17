@@ -18,8 +18,8 @@ function StudentSectionCard({section, student = false}) {
             </CardContent>
             <CardActions>
                 <Link
-                    to={'/student/courses/' + section.courseId + '/sections/' + section.id + '/homeworks'}>
-                    <Button size="small">تکالیف</Button>
+                    to={'/student/courses/' + section.courseId + '/sections/' + section.id}>
+                    <Button size="small" variant={"outlined"}>مشاهده</Button>
                 </Link>
             </CardActions>
 

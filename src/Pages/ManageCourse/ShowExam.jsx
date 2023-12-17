@@ -1,13 +1,26 @@
-import {Avatar, Box, Card, CardContent, Stack, Typography} from "@mui/material";
-import React from "react";
+import {Avatar, Box, Button, Card, CardContent, IconButton, Stack, Typography} from "@mui/material";
+import React, {useState} from "react";
 import GradingIcon from '@mui/icons-material/Grading';
 import DoneIcon from '@mui/icons-material/Done';
 import IconBox from "../../Components/IconBox";
 import Grid from "@mui/material/Unstable_Grid2";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import Api from "../../Api/Api";
+import {Image} from "@mui/icons-material";
+import Link from "@mui/material/Link";
 
 
 function ShowExam({exam}) {
+    const [file, setFile] = useState(null);
+
+    async function handleDownload() {
+        console.log(exam);
+        const response = await Api.get('/exams/download/' + exam.file.id + '/' + exam.file.format);
+        console.log(response)
+        
+    }
+
+
     return (
         <Card>
             <CardContent>
@@ -31,8 +44,19 @@ function ShowExam({exam}) {
                         </Stack>
                     </Grid>
                     <Grid xs={6}>
-                        <AttachFileIcon fontSize={'large'}/>
-
+                        {
+                            exam.file &&
+                            <>
+                                <Button endIcon={<AttachFileIcon fontSize={'large'}/>} onClick={handleDownload}>
+                                    دانلود فایل
+                                </Button>
+                                <Link
+                                    href={'http://localhost:8080/manabu/exams/download/' + exam.file.id + '/' + exam.file.format}>
+                                    <Box component={'img'} alt={'فایل امتحان'} sx={{maxWidth: '200px'}}
+                                         src={'http://localhost:8080/manabu/exams/download/' + exam.file.id + '/' + exam.file.format}/>
+                                </Link>
+                            </>
+                        }
                     </Grid>
                 </Grid>
             </CardContent>

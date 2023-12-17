@@ -1,18 +1,17 @@
 import {
     Alert, Box, Button,
-    Container, Divider, Fab,
+    Container, Divider, Fab, Skeleton,
     Snackbar,
     Typography
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import {useContext, useState} from "react";
+import React, {useContext, useState} from "react";
 import UserContext from "../../Contexts/UserContext";
 import {Link, useParams} from "react-router-dom";
 import '../../Themes/custom-scrollbar.css';
 import useCourse from "../../Hooks/useCourse";
 import HandleExam from "../ManageCourse/HandleExam";
 import HandleSections from "./HandleSections";
-import ChatIcon from '@mui/icons-material/Chat';
 import ChatBox from "../../Components/ChatBox/ChatBox";
 
 function StudentCourseClass() {
@@ -25,23 +24,12 @@ function StudentCourseClass() {
         message: ''
     });
 
-
     const user = useContext(UserContext);
-
-    function handleSubmit() {
-
-    }
-
-    function handleFormError() {
-        let error = false;
-        return error;
-    }
 
     function handleSnackBarClose(event, reason) {
         if (reason === 'clickaway') {
             return;
         }
-
         setSnackbarStatus({...snackbarStatus, open: false});
     }
 
@@ -52,6 +40,35 @@ function StudentCourseClass() {
             </Typography>
             <Container disableGutters maxWidth={'md'} sx={{p: {xs: 1, md: 2}}}>
                 <Grid container spacing={{xs: 2, md: 3}}>
+                    <Grid xs={12} container>
+                        <Grid xs={12}>
+                            <Divider sx={{width: '100%'}} variant={'fullWidth'} textAlign={'left'}>
+                                <Typography component="p" variant="h6">
+                                    مشخصات دوره
+                                </Typography>
+                            </Divider>
+
+                            <Typography component="p" variant="subtitle1">
+                                {'عنوان دوره: '}
+                                {
+                                    !courseIsLoading ?
+                                        <Link to={'/courses/' + courseId}>
+                                            <Button variant={'text'} size={'medium'}>{course.title}</Button>
+                                        </Link>
+                                        : <Skeleton variant={'text'} width={50}/>
+                                }
+                            </Typography>
+
+                            <Typography component="p" variant="subtitle1">
+                                {'توضیحات دوره: '}
+                                {
+                                    !courseIsLoading ?
+                                        course.descriptions
+                                        : <Skeleton variant={'text'} width={50}/>
+                                }
+                            </Typography>
+                        </Grid>
+                    </Grid>
                     <Grid xs={12} container>
                         <Grid xs={12}>
                             <Divider sx={{width: '100%'}} variant={'fullWidth'} textAlign={'left'}>
@@ -90,7 +107,7 @@ function StudentCourseClass() {
                 </Grid>
                 {
                     !courseIsLoading ?
-                        <ChatBox teacherId={course.teacher.id} userId={user.current.appBarUser.id}/>
+                        <ChatBox teacher={course.teacher} user={user.current.appBarUser}/>
                         : ''
                 }
             </Container>

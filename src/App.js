@@ -1,17 +1,19 @@
 import React, {useRef, useState} from "react";
-import {Alert, Box, Container, CssBaseline, Snackbar, ThemeProvider} from "@mui/material";
+import {Alert, Box, Container, CssBaseline, IconButton, Snackbar, ThemeProvider} from "@mui/material";
 import RTL from "./Themes/RTL";
 import RTLTheme from "./Themes/RTLTheme";
-import Api from "./Api/Api";
 import UserContext from "./Contexts/UserContext"
 import MenuAppBar from "./Components/Header/Appbar";
-import {Outlet, useLocation} from "react-router-dom";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import NavigationMenu from "./Components/NavigationMenu/NavigationMenu";
-import getCookie from "./Functions/GetCookie/GetCookie";
 import RouterBreadcrumbs from "./Components/RouterBreadCrumbs";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import Grid from "@mui/material/Unstable_Grid2";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 function App() {
     const location = useLocation();
+    const navigate = useNavigate();
 
     const [snackbarStatus, setSnackbarStatus] = useState({
         open: false,
@@ -45,8 +47,22 @@ function App() {
                     <Box pb={8} pt={2}>
                         {
                             location.pathname !== '/' &&
-                            <Container maxWidth={'md'} sx={{mt: 1}}>
-                                <RouterBreadcrumbs/>
+                            <Container maxWidth={'md'} sx={{my: 2}}>
+                                <Grid container sx={{display: 'flex', alignItems: 'center'}}>
+                                    <Grid xs={1} sx={{display: 'flex', justifyContent: 'left'}}>
+                                        <IconButton onClick={() => navigate(1)}>
+                                            <ArrowForwardIosIcon/>
+                                        </IconButton>
+                                    </Grid>
+                                    <Grid xs={10}>
+                                        <RouterBreadcrumbs/>
+                                    </Grid>
+                                    <Grid xs={1} sx={{display: 'flex', justifyContent: 'right'}}>
+                                        <IconButton onClick={() => navigate(-1)}>
+                                            <ArrowBackIosNewIcon/>
+                                        </IconButton>
+                                    </Grid>
+                                </Grid>
                             </Container>
                         }
                         <Outlet context={[snackbarStatus, setSnackbarStatus]}>

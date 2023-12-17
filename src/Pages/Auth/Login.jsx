@@ -84,8 +84,6 @@ function Login({onLogin = null}) {
                 type: 'error',
                 message: 'در هنگام دریافت اطلاعات مشکلی پیش آمده است.'
             });
-            console.log(error)
-
         }
     }
 

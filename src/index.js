@@ -10,7 +10,6 @@ import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import ErrorPage from "./Pages/ErrorPages/ErrorPage";
 import AlreadyLogin from "./Components/AlreadyLogin";
-import {Logout} from "@mui/icons-material";
 import ProtectedRoute, {loader as protectedRouteLoader} from "./Components/ProtectedRoute";
 import ShowAllCourses from "./Pages/Courses/ShowAllCourses";
 import CreateTeacher from "./Pages/CreateTeacher/CreateTeahcer";
@@ -26,6 +25,11 @@ import TeachersAll from "./Pages/TeachersAll/TeachersAll";
 import RegisteredCourses from "./Pages/RegisteredCourses/RegisteredCourses";
 import StudentCourseClass from "./Pages/StudentCourseClass/StudentCourseClass";
 import Home from "./Pages/Home/Home";
+import TeacherChatRoom from "./Pages/TeacherChat/TeacherChatRoom";
+import Logout from "./Api/Logout";
+import EditSection from "./Pages/EditSection/EditSection";
+import EditProfile from "./Pages/EditProfile/EditProfile";
+import StudentViewSection from "./Pages/StudentViewSection/StudentViewSection";
 
 
 const browserRouter = createBrowserRouter([
@@ -57,6 +61,11 @@ const browserRouter = createBrowserRouter([
                         path: '/logout',
                         element: <Logout/>
                     },
+                    {
+                        path: '/edit-profile',
+                        element: <ProtectedRoute><EditProfile/></ProtectedRoute>,
+                        loader: protectedRouteLoader
+                    },
 
                     // Courses
                     {
@@ -79,6 +88,16 @@ const browserRouter = createBrowserRouter([
                     {
                         path: '/student/courses/:courseId',
                         element: <ProtectedRoute><StudentCourseClass/></ProtectedRoute>,
+                        loader: protectedRouteLoader
+                    },
+                    {
+                        path: '/student/courses/:courseId/sections',
+                        element: <ProtectedRoute><ManageSections forStudents/></ProtectedRoute>,
+                        loader: protectedRouteLoader
+                    },
+                    {
+                        path: '/student/courses/:courseId/sections/:sectionId',
+                        element: <ProtectedRoute><StudentViewSection/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
 
@@ -125,8 +144,18 @@ const browserRouter = createBrowserRouter([
                         loader: protectedRouteLoader
                     },
                     {
+                        path: '/teachers/courses/:courseId/sections/:sectionId',
+                        element: <ProtectedRoute><EditSection/></ProtectedRoute>,
+                        loader: protectedRouteLoader
+                    },
+                    {
                         path: '/teachers/courses/:courseId/sections/:sectionId/homeworks',
                         element: <ProtectedRoute><ManageHomeWorks/></ProtectedRoute>,
+                        loader: protectedRouteLoader
+                    },
+                    {
+                        path: '/teachers/courses/:courseId/chat-room',
+                        element: <ProtectedRoute><TeacherChatRoom/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     }
 
@@ -137,9 +166,7 @@ const browserRouter = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
-        <RouterProvider router={browserRouter}/>
-    </React.StrictMode>
+    <RouterProvider router={browserRouter}/>
 );
 
 // If you want your app to work offline and load faster, you can change

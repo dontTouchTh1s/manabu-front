@@ -318,21 +318,31 @@ function ViewCourse() {
                                     {
                                         !courseIsLoading ?
                                             !course.registered ?
-                                                <LoadingButton
-                                                    disabled={courseIsLoading}
-                                                    fullWidth
-                                                    loading={takeCourseLoading}
-                                                    variant={'contained'}
-                                                    startIcon={<AddCardOutlinedIcon/>}
-                                                    onClick={handleTakeCourse}
-                                                >
-                                                    {'شرکت در دوره'}
-                                                </LoadingButton> :
+                                                user.current.appBarUser.teacher &&
+                                                course.teacher.id === user.current.appBarUser.teacher.id ?
+                                                    <Link to={'/teachers/courses/' + courseId}>
+                                                        <Button variant={'contained'} fullWidth>
+                                                            مدیریت کلاس
+                                                        </Button>
+                                                    </Link>
+                                                    :
+                                                    <LoadingButton
+                                                        disabled={courseIsLoading}
+                                                        fullWidth
+                                                        loading={takeCourseLoading}
+                                                        variant={'contained'}
+                                                        startIcon={<AddCardOutlinedIcon/>}
+                                                        onClick={handleTakeCourse}
+                                                    >
+                                                        {'شرکت در دوره'}
+                                                    </LoadingButton>
+                                                :
                                                 <Link to={'/student/courses/' + courseId}>
                                                     <Button variant={'contained'} fullWidth>
                                                         مشاهده کلاس
                                                     </Button>
-                                                </Link> :
+                                                </Link>
+                                            :
                                             <LoadingCircle/>
                                     }
                                 </Stack>

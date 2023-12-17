@@ -2,14 +2,14 @@ import {
     Alert, Box, Button,
     Checkbox,
     Container, Divider, FormControl, FormControlLabel,
-    InputLabel, MenuItem, Select,
+    InputLabel, MenuItem, Select, Skeleton,
     Snackbar,
     TextField,
     Typography
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Api from "../../Api/Api";
 import UserContext from "../../Contexts/UserContext";
 import moment from "moment-jalaali";
@@ -180,6 +180,35 @@ function ManageCourse() {
             </Typography>
             <Container disableGutters maxWidth={'md'} sx={{p: {xs: 1, md: 2}}}>
                 <Grid container spacing={{xs: 2, md: 3}}>
+                    <Grid xs={12} container>
+                        <Grid xs={12}>
+                            <Divider sx={{width: '100%'}} variant={'fullWidth'} textAlign={'left'}>
+                                <Typography component="p" variant="h6">
+                                    مشخصات دوره
+                                </Typography>
+                            </Divider>
+
+                            <Typography component="p" variant="subtitle1">
+                                {'عنوان دوره: '}
+                                {
+                                    !courseIsLoading ?
+                                        <Link to={'/courses/' + courseId}>
+                                            <Button variant={'text'} size={'medium'}>{course.title}</Button>
+                                        </Link>
+                                        : <Skeleton variant={'text'} width={50}/>
+                                }
+                            </Typography>
+
+                            <Typography component="p" variant="subtitle1">
+                                {'توضیحات دوره: '}
+                                {
+                                    !courseIsLoading ?
+                                        course.descriptions
+                                        : <Skeleton variant={'text'} width={50}/>
+                                }
+                            </Typography>
+                        </Grid>
+                    </Grid>
                     <Grid xs={12} container>
                         <Grid xs={12}>
                             <Divider sx={{width: '100%'}} variant={'fullWidth'} textAlign={'left'}>

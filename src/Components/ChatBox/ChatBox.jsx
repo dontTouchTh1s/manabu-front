@@ -1,48 +1,55 @@
-import {Box, Button, Fab, IconButton, InputAdornment, Modal, Stack, TextField, Typography} from "@mui/material";
-import {useState} from "react";
+import {Box, Button, Fab, IconButton, Stack, Typography} from "@mui/material";
+import {useEffect, useState} from "react";
 import ChatIcon from "@mui/icons-material/Chat";
-import Message from "./Message";
-import SendIcon from '@mui/icons-material/Send';
 import io from "socket.io-client";
+import CloseIcon from '@mui/icons-material/Close';
+import Messenger from "../Chat/Messenger";
 
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+const containerStyle = {
+    position: 'fixed',
+    bottom: '145px',
+    left: '210px',
     width: 400,
     bgcolor: 'background.paper',
-    borderRadius: 3,
+    borderRadius: 4,
     boxShadow: 24,
-    p: 4,
+    outline: 0
 };
-let socket;
 
-function ChatBox({teacherId, userId}) {
-    const [open, setOpen] = useState(true);
-    const [currentMessage, setCurrentMessage] = useState('');
+const style = {
+    p: {xs: 1, sm: 2}
+}
 
-    function handleClose() {
-        setOpen(false);
-    }
+function ChatBox({teacher, user}) {
+    const [open, setOpen] = useState(false);
+    const [socket, setSocket] = useState(null);
+    const [chat, setChat] = useState(null);
 
     function handleStartChat() {
-        socket = io.connect('http://localhost:8080/api/chat');
+        setSocket(io.connect('http://localhost:8080/api/chat'));
     }
 
-    async function sendMessage() {
-        if (currentMessage !== '') {
+    async function chatList(date) {
+        await socket.emit('chatsList', date);
+    }
 
-            const messageData = {
-                teacherId: teacherId,
-                userId: userId,
-                content: currentMessage
-            };
-            console.log(messageData);
-            await socket.emit('createMsg', JSON.stringify(messageData));
-
+    useEffect(() => {
+        if (socket) {
+            if (!chat) {
+                let data = {teacherId: teacher.id, userId: user.id};
+                chatList(data);
+            }
         }
-    }
+    }, [socket]);
+
+    useEffect(() => {
+        if (socket) {
+            socket.on('chatsList', (data) => {
+                console.log(data)
+                setChat(data.filter(cht => cht.user.id === user.id && cht.teacher.id === teacher.id)[0])
+            })
+        }
+    }, [socket]);
 
     return (
         <>
@@ -55,45 +62,36 @@ function ChatBox({teacherId, userId}) {
                     چت با استاد
                 </Typography>
             </Fab>
-            <Modal open={open}
-                   onClose={handleClose}
-                   aria-labelledby="modal-modal-title"
-                   aria-describedby="modal-modal-description"
+            <Box
+                sx={containerStyle}
             >
-                <Box sx={style}>
+                <Box sx={style} display={open ? 'block' : 'none'}>
                     <Stack spacing={1}>
-                        <Stack spacing={1}>
-                            <Message/>
-                            <Message me/>
-                            <Message/>
-                        </Stack>
-
-                        <TextField
-                            placeholder={'متن پیام'}
-                            fullWidth
-                            value={currentMessage}
-                            onChange={(e) => setCurrentMessage(e.target.value)}
-                            InputProps={{
-                                endAdornment:
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            edge="start"
-                                            onClick={sendMessage}
-                                            disabled={currentMessage === ''}
-                                        >
-                                            <SendIcon color={'primary'} sx={{transform: 'scaleX(-1)'}}/>
-                                        </IconButton>
-                                    </InputAdornment>
-                            }}
-                        />
-                        <Button variant={'contained'} onClick={handleStartChat}>
-                            شروع گفت و گو
-                        </Button>
+                        <Box>
+                            <IconButton onClick={() => setOpen(false)}>
+                                <CloseIcon/>
+                            </IconButton>
+                            <Typography component={'span'} variant={'body1'} textAlign={'left'}>
+                                {teacher.user.fName + ' ' + teacher.user.lName}
+                            </Typography>
+                        </Box>
+                        {
+                            !socket || !chat ?
+                                <>
+                                    <Typography component={'span'} variant={'body1'} textAlign={'center'}>
+                                        {'برای شروع گفت و گو با استاد '}
+                                        {teacher.user.fName + ' ' + teacher.user.lName}
+                                        {' روی دکمه زیر کلیک کنید.'}
+                                    </Typography>
+                                    <Button variant={'contained'} onClick={handleStartChat}>
+                                        شروع گفت و گو
+                                    </Button>
+                                </> :
+                                <Messenger socket={socket} user={user} teacher={teacher} chatId={chat.id}/>
+                        }
                     </Stack>
                 </Box>
-
-
-            </Modal>
+            </Box>
         </>
     );
 }

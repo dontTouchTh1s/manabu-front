@@ -1,11 +1,13 @@
 import Api from "../../Api/Api";
-import {Box, Container, Typography} from "@mui/material";
+import {Box, Container, Fab, Typography} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import CourseCard from "./CourseCard";
+import CourseCard from "../Courses/CourseCard";
 import useSWRImmutable from "swr/immutable";
 import LoadingCircle from "../../Components/LoadingCircle";
 import {useContext} from "react";
 import userContext from "../../Contexts/UserContext";
+import AddIcon from "@mui/icons-material/Add";
+import {Link} from "react-router-dom";
 
 async function fetcher([url, params]) {
     return Api.post(url, params).then(response => response.data.courses.courses);
@@ -27,7 +29,7 @@ function CurrentTeacherCourses() {
                             teacherCourses.length !== 0 ?
                                 teacherCourses.map(teacherCourses =>
                                     <Grid key={teacherCourses.id} xs={12} sm={6} md={4}>
-                                        <CourseCard course={teacherCourses}>
+                                        <CourseCard course={teacherCourses} forTeacher>
                                         </CourseCard>
                                     </Grid>
                                 ) :
@@ -44,6 +46,14 @@ function CurrentTeacherCourses() {
                     }
 
                 </Grid>
+                <Link to={'/teachers/courses/create'}>
+                    <Fab color="primary" variant={'extended'} aria-label="افزودن"
+                         sx={{position: 'fixed', bottom: 75}}
+                    >
+                        <AddIcon/>
+                        ایجاد دوره
+                    </Fab>
+                </Link>
             </Container>
         </Box>);
 }

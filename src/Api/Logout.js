@@ -10,6 +10,7 @@ function Logout() {
     async function logout() {
         await Api.get('/logout');
         user.current.setNavigationMenuUser(null);
+        user.current.setAppBarUser(null)
         navigate('/login');
     }
 

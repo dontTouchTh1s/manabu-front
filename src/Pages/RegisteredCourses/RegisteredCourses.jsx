@@ -1,4 +1,3 @@
-import {useLoaderData} from "react-router-dom";
 import Api from "../../Api/Api";
 import {Box, Container, Typography} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";

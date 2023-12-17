@@ -5,7 +5,6 @@ import {Link} from "react-router-dom";
 import IconBox from "../../Components/IconBox";
 
 function CourseCard({takenCourse}) {
-
     return (
         <>
             <Card>

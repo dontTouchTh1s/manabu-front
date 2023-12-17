@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import Api from "../../Api/Api";
 import CourseCard from "./CourseCard";
 import {
@@ -21,6 +21,7 @@ import LoadingCircle from "../../Components/LoadingCircle";
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from "@mui/icons-material/Add";
 import {useNavigate} from "react-router-dom";
+import userContext from "../../Contexts/UserContext";
 
 async function searcher([url, params]) {
     return Api.post(url, params).then(response => response.data.courses.courses);
@@ -51,6 +52,7 @@ function Courses() {
         })
     }
 
+    const user = useContext(userContext);
     const navigate = useNavigate();
 
     return (
@@ -197,15 +199,18 @@ function Courses() {
                         }
 
                     </Grid>
-                    <Fab color="primary" variant={'extended'} aria-label="افزودن"
-                         onClick={() => {
-                             navigate('/teachers/courses/create')
-                         }}
-                         sx={{position: 'fixed', bottom: 65}}
-                    >
-                        <AddIcon/>
-                        ایجاد دوره
-                    </Fab>
+                    {
+                        user.current.appBarUser.teacher &&
+                        <Fab color="primary" variant={'extended'} aria-label="افزودن"
+                             onClick={() => {
+                                 navigate('/teachers/courses/create')
+                             }}
+                             sx={{position: 'fixed', bottom: 75}}
+                        >
+                            <AddIcon/>
+                            ایجاد دوره
+                        </Fab>
+                    }
                 </Container>
             </Box>
 
