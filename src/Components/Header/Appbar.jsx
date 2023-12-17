@@ -16,6 +16,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MiniDrawer from "../Drawer/Drawer";
 import DrawerHandler from "./DrawerHandler";
 import UserProfileMenu from "./UserProfileMenu";
+import RTLTheme from "../../Themes/RTLTheme";
 
 function MenuAppBar() {
     const user = useContext(userContext);
@@ -24,9 +25,32 @@ function MenuAppBar() {
     user.current = {...user.current, appBarUser, setAppBarUser}
 
     return (
-        <Box sx={{flexGrow: 1}}>
-            <AppBar position="static">
-                <Toolbar>
+        <Box sx={{flexGrow: 1, display: 'flex', justifyContent: 'center'}}>
+            <AppBar position="static" sx={{
+                justifyContent: 'center',
+                borderBottomRightRadius: 24,
+                borderBottomLeftRadius: 24,
+                [RTLTheme.breakpoints.down('sm')]: {
+                    width: '100%'
+                },
+                [RTLTheme.breakpoints.down('md')]: {
+                    maxWidth: RTLTheme.breakpoints.values.sm,
+                    width: '90%'
+                },
+                [RTLTheme.breakpoints.down('lg')]: {
+                    maxWidth: RTLTheme.breakpoints.values.md,
+                    width: '90%'
+
+                },
+                [RTLTheme.breakpoints.up('lg')]: {
+                    maxWidth: RTLTheme.breakpoints.values.lg,
+                    width: '80%'
+                }
+            }}>
+
+                <Toolbar sx={{
+                    justifyContent: 'space-between'
+                }}>
                     {
                         <DrawerHandler user={appBarUser}/>
                     }
@@ -38,9 +62,6 @@ function MenuAppBar() {
                     {/*    aria-label={'back'}>*/}
                     {/*    <ArrowForwardIcon/>*/}
                     {/*</IconButton>*/}
-                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                        aria language
-                    </Typography>
 
                     <UserProfileMenu user={appBarUser}/>
                 </Toolbar>

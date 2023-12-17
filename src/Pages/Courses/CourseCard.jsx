@@ -16,7 +16,6 @@ import IconBox from "../../Components/IconBox";
 import React, {useContext, useEffect, useState} from "react";
 import userContext from "../../Contexts/UserContext";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import useLike from "../../Hooks/useLike";
 import Api from "../../Api/Api";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
