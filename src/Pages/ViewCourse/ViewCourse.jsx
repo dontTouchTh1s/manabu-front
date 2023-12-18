@@ -76,7 +76,7 @@ function ViewCourse() {
     const {comments, commentsIsLoading} = useComments({
         take: 1000,
         skip: 0,
-        target: 'courseId',
+        target: 'course',
         targetId: courseId,
 
     });
