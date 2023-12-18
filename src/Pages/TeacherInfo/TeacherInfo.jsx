@@ -19,8 +19,9 @@ function TeacherInfo() {
     const {teacherId} = useParams();
     const {
         data: teacher,
-        isLoading: teacherIsLoading
+        isLoading: teacherIsLoading,
     } = useSWRImmutable('/teacher/' + teacherId, fetcher, {revalidateOnMount: true});
+
     return (
         <Box>
             <Typography component="h1" variant="h4" sx={{textAlign: 'center'}}>
@@ -28,7 +29,7 @@ function TeacherInfo() {
             </Typography>
             <Container disableGutters maxWidth={'md'} sx={{p: {xs: 1, md: 2}}}>
                 {
-                    !teacherIsLoading ?
+                    !teacherIsLoading && teacher ?
                         <Grid container spacing={{xs: 2, md: 3}}>
 
                             <Grid xs={12} sm={6} md={4}>
