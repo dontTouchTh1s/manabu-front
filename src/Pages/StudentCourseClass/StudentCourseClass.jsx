@@ -13,10 +13,12 @@ import useCourse from "../../Hooks/useCourse";
 import HandleExam from "../ManageCourse/HandleExam";
 import HandleSections from "./HandleSections";
 import ChatBox from "../../Components/ChatBox/ChatBox";
+import ChatIcon from "@mui/icons-material/Chat";
 
 function StudentCourseClass() {
     const {courseId} = useParams();
     const {course, courseIsLoading} = useCourse(courseId);
+    const [chatBoxIsOpen, setChatBoxIsOpen] = useState(false);
     // Snackbar
     const [snackbarStatus, setSnackbarStatus] = useState({
         open: false,
@@ -107,7 +109,20 @@ function StudentCourseClass() {
                 </Grid>
                 {
                     !courseIsLoading ?
-                        <ChatBox teacher={course.teacher} user={user.current.appBarUser}/>
+                        <>
+                            <Fab color="primary" variant={'extended'} aria-label="گفت و گو با استاد"
+                                 sx={{position: 'fixed', bottom: 78}}
+                                 onClick={() => setChatBoxIsOpen(!chatBoxIsOpen)}
+                            >
+                                <ChatIcon/>
+                                <Typography component={'span'} variant={'body1'} sx={{ml: 1}}>
+                                    چت با استاد
+                                </Typography>
+                            </Fab>
+                            <ChatBox teacher={course.teacher} user={user.current.appBarUser} isOpen={chatBoxIsOpen}
+                                     onChange={(v) => setChatBoxIsOpen(v)}/>
+                        </>
+
                         : ''
                 }
             </Container>
