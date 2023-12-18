@@ -68,6 +68,11 @@ const browserRouter = createBrowserRouter([
                         element: <ProtectedRoute><EditProfile/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
+                    {
+                        path: '/chat-room',
+                        element: <ProtectedRoute><ChatRoomAllContact/></ProtectedRoute>,
+                        loader: protectedRouteLoader
+                    },
 
                     // Courses
                     {
@@ -108,16 +113,10 @@ const browserRouter = createBrowserRouter([
                         loader: protectedRouteLoader
                     },
 
-
                     // Teachers
                     {
                         path: '/teachers',
                         element: <ProtectedRoute><TeachersAll/></ProtectedRoute>,
-                        loader: protectedRouteLoader
-                    },
-                    {
-                        path: '/chat-room',
-                        element: <ProtectedRoute><ChatRoomAllContact/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
                     {
@@ -127,52 +126,52 @@ const browserRouter = createBrowserRouter([
                     },
                     {
                         path: '/teachers/:teacherId/courses',
-                        element: <ProtectedRoute><ShowAllCourses/></ProtectedRoute>,
+                        element: <ProtectedRoute requiredRole={['teacher']}><ShowAllCourses/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
                     {
                         path: '/teachers/register',
-                        element: <ProtectedRoute><CreateTeacher/></ProtectedRoute>,
+                        element: <ProtectedRoute requiredRole={['user']}><CreateTeacher/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
                     {
                         path: '/teachers/courses',
-                        element: <ProtectedRoute><CurrentTeacherCourses/></ProtectedRoute>,
+                        element: <ProtectedRoute requiredRole={['teacher']}><CurrentTeacherCourses/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
                     {
                         path: '/teachers/courses/:courseId',
-                        element: <ProtectedRoute><ManageCourse/></ProtectedRoute>,
+                        element: <ProtectedRoute requiredRole={['teacher']}><ManageCourse/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
                     {
                         path: '/teachers/courses/create',
-                        element: <ProtectedRoute><CreateCourse/></ProtectedRoute>,
+                        element: <ProtectedRoute requiredRole={['teacher']}><CreateCourse/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
                     {
                         path: '/teachers/courses/:courseId/sections',
-                        element: <ProtectedRoute><ManageSections/></ProtectedRoute>,
+                        element: <ProtectedRoute requiredRole={['teacher']}><ManageSections/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
                     {
                         path: '/teachers/courses/:courseId/sections/create',
-                        element: <ProtectedRoute><CreateSection/></ProtectedRoute>,
+                        element: <ProtectedRoute requiredRole={['teacher']}><CreateSection/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
                     {
                         path: '/teachers/courses/:courseId/sections/:sectionId',
-                        element: <ProtectedRoute><EditSection/></ProtectedRoute>,
+                        element: <ProtectedRoute requiredRole={['teacher']}><EditSection/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
                     {
                         path: '/teachers/courses/:courseId/sections/:sectionId/homeworks',
-                        element: <ProtectedRoute><ManageHomeWorks/></ProtectedRoute>,
+                        element: <ProtectedRoute requiredRole={['teacher']}><ManageHomeWorks/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
                     {
                         path: '/teachers/courses/:courseId/chat-room',
-                        element: <ProtectedRoute><TeacherChatRoom/></ProtectedRoute>,
+                        element: <ProtectedRoute requiredRole={['teacher']}><TeacherChatRoom/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     }
 

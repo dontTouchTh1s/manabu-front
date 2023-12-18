@@ -1,4 +1,4 @@
-import {Await, defer, useLoaderData, useNavigate} from "react-router-dom";
+import {Await, defer, useLoaderData, useNavigate, useOutletContext} from "react-router-dom";
 import {Suspense, useContext, useEffect, useRef, useState} from "react";
 
 import UserContext from "../Contexts/UserContext";
@@ -26,18 +26,28 @@ export async function loader() {
     }
 }
 
-function ProtectedRoute({noNavigate = false, requiredRole = 'guest', children}) {
+function ProtectedRoute({noNavigate = false, requiredRole = ['teacher', 'user'], children}) {
     const data = useLoaderData();
     const navigate = useNavigate();
     const user = useContext(UserContext);
     const [auth, setAuth] = useState(false);
     const nav = useRef('');
+    const setAppSnackbarStatus = useOutletContext()[1];
 
     async function checkUser() {
         let userData = await data.currentUser;
         if (userData) {
             user.current.setAppBarUser(userData.data.user);
             user.current.setNavigationMenuUser(userData.data.user);
+            const userRoll = userData.data.user.teacher ? 'teacher' : 'user';
+            if (!requiredRole.includes(userRoll)) {
+                nav.current = '/courses';
+                setAppSnackbarStatus({
+                    open: 'true',
+                    type: 'error',
+                    message: 'شما به صفحه مورد نظر دسترسی لازم را ندارید.'
+                });
+            }
         } else {
             user.current.setAppBarUser(null);
             user.current.setNavigationMenuUser(null);
