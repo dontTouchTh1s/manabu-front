@@ -13,26 +13,30 @@ const containerStyle = {
     bgcolor: 'background.paper',
     borderRadius: 4,
     boxShadow: 24,
-    outline: 0
+    outline: 0,
+    zIndex: 10001
 };
 
 const style = {
     p: {xs: 1, sm: 2}
 }
 
-function ChatBox({teacher, user}) {
-    const [open, setOpen] = useState(false);
+function ChatBox({teacher, user, isOpen, forTeacher = false, onChange}) {
+    const [open, setOpen] = useState(isOpen);
     const [socket, setSocket] = useState(null);
     const [chat, setChat] = useState(null);
+
+    useEffect(() => {
+        setOpen(isOpen)
+        setSocket(null)
+    }, [isOpen]);
 
     function handleStartChat() {
         setSocket(io.connect('http://localhost:8080/api/chat'));
     }
 
-    console.log(socket)
-
-    async function chatList(date) {
-        await socket.emit('chatsList', date);
+    async function chatList(data) {
+        await socket.emit('chatsList', data);
     }
 
     useEffect(() => {
@@ -62,33 +66,36 @@ function ChatBox({teacher, user}) {
 
     return (
         <>
-            <Fab color="primary" variant={'extended'} aria-label="گفت و گو با استاد"
-                 sx={{position: 'fixed', bottom: 78}}
-                 onClick={() => setOpen(!open)}
-            >
-                <ChatIcon/>
-                <Typography component={'span'} variant={'body1'} sx={{ml: 1}}>
-                    چت با استاد
-                </Typography>
-            </Fab>
             <Box
                 sx={containerStyle}
             >
                 <Box sx={style} display={open ? 'block' : 'none'}>
                     <Stack spacing={1}>
                         <Box>
-                            <IconButton onClick={() => setOpen(false)}>
+                            <IconButton onClick={() => {
+                                setOpen(false)
+                                onChange(false);
+                            }}>
                                 <CloseIcon/>
                             </IconButton>
                             <Typography component={'span'} variant={'body1'} textAlign={'left'}>
-                                {teacher.user.fName + ' ' + teacher.user.lName}
+                                {
+                                    !forTeacher ?
+                                        <>
+                                            {'استاد '}
+                                            {
+                                                teacher.user.fName + ' ' + teacher.user.lName
+                                            }
+                                        </> :
+                                        user.fName + ' ' + user.lName
+                                }
                             </Typography>
                         </Box>
                         {
                             !socket || !chat ?
                                 <>
                                     <Typography component={'span'} variant={'body1'} textAlign={'center'}>
-                                        {'برای شروع گفت و گو با استاد '}
+                                        {'برای شروع گفت و گو با '}
                                         {teacher.user.fName + ' ' + teacher.user.lName}
                                         {' روی دکمه زیر کلیک کنید.'}
                                     </Typography>
@@ -96,7 +103,8 @@ function ChatBox({teacher, user}) {
                                         شروع گفت و گو
                                     </Button>
                                 </> :
-                                <Messenger socket={socket} user={user} teacher={teacher} chatId={chat.id}/>
+                                <Messenger socket={socket} user={user} teacher={teacher} chatId={chat.id}
+                                           forTeacher={forTeacher}/>
                         }
                     </Stack>
                 </Box>
