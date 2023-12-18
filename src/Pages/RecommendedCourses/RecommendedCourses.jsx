@@ -13,18 +13,24 @@ import AddIcon from "@mui/icons-material/Add";
 import {useNavigate} from "react-router-dom";
 import userContext from "../../Contexts/UserContext";
 import useSWRImmutable from "swr/immutable";
+import RTLTheme from "../../Themes/RTLTheme";
 
 async function searcher(url) {
     return Api.get(url).then(response => response.data);
 }
 
 function RecommendedCourses() {
-    const {
+    let {
         data: courses,
         isLoading: courseIsLoading
     } = useSWRImmutable('/recommender', searcher, {revalidateOnMount: true});
 
-
+    if (!courseIsLoading) {
+        if (courses) {
+            courses = courses.suggestion;
+            console.log(courses)
+        }
+    }
     const user = useContext(userContext);
     const navigate = useNavigate();
 
@@ -32,14 +38,14 @@ function RecommendedCourses() {
         <>
             <Box>
                 <Typography component="h1" variant="h4" sx={{textAlign: 'center'}}>
-                    دوره ها
+                    دوره های پیشنهادی
                 </Typography>
                 <Container disableGutters maxWidth={'md'} sx={{p: {xs: 1, md: 2}}}>
                     <Grid container spacing={{xs: 2, md: 3}}>
 
                         {
                             !courseIsLoading ?
-                                courses.suggestion.length !== 0 ?
+                                courses.length !== 0 ?
                                     courses.map(course =>
                                         <Grid key={course.id} xs={12} sm={6} md={4}>
                                             <CourseCard course={course}>
@@ -67,7 +73,31 @@ function RecommendedCourses() {
                          onClick={() => {
                              navigate('/teachers/courses/create')
                          }}
-                         sx={{position: 'fixed', bottom: 75, right: 10}}
+                         sx={{
+                             position: 'fixed',
+                             [RTLTheme.breakpoints.down('md')]: {
+                                 bottom: 60,
+                                 left: 5,
+                                 transition: '300ms ease-in-out',
+                                 overflow: 'hidden',
+                                 maxWidth: 30,
+
+                                 '&:hover': {
+                                     maxWidth: 140,
+                                 },
+                                 '> span': {
+                                     display: 'none'
+                                 },
+                                 '&:hover > span': {
+                                     display: 'block'
+                                 }
+                             },
+
+                             [RTLTheme.breakpoints.up('md')]: {
+                                 bottom: 80,
+                                 left: 20,
+                             },
+                         }}
                     >
                         <AddIcon/>
                         ایجاد دوره
