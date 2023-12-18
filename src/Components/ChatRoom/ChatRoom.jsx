@@ -40,40 +40,50 @@ function ChatRoom({socket, sender, contacts, forTeacher = false}) {
     const [currentReceiver, setCurrentReceiver] = useState(null);
     const [allReceivers, setAllReceivers] = useState(contacts);
 
-    async function chatList(date) {
-        await socket.emit('chatsList', date);
+    async function chatList(data) {
+        await socket.emit('chatsList', data);
     }
 
     useEffect(() => {
-        let data;
-        if (forTeacher) {
-            data = {teacherId: sender.id};
-        } else {
-            data = {userId: sender.id};
+        if (socket) {
+            let data;
+            if (forTeacher) {
+                data = {teacherId: sender.id};
+            } else {
+                data = {userId: sender.id};
+            }
+            console.log(data)
+            chatList(data);
         }
-        chatList(data);
-    }, []);
+    }, [socket]);
 
     useEffect(() => {
-        socket.on('chatsList', (data) => {
-            let newReceivers;
-            if (forTeacher) {
-                newReceivers = data.map(cht => ({
-                        ...cht.user,
-                        chatId: cht.id
-                    })
-                )
-            } else {
-                newReceivers = data.map(cht => ({
-                        ...cht.teacher,
-                        chatId: cht.id
-                    })
-                );
-            }
-            const allReceivers = [...newReceivers, ...contacts.filter(cnt => newReceivers.filter(rc => rc.id === cnt.id).length === 0)]
-            setAllReceivers(allReceivers);
-        })
-    }, [socket]);
+        if (socket) {
+            socket.on('chatsList', (data) => {
+                let newReceivers;
+                if (forTeacher) {
+                    newReceivers = data.map(cht => ({
+                            ...cht.user,
+                            chatId: cht.id
+                        })
+                    )
+                } else {
+                    newReceivers = data.map(cht => ({
+                            ...cht.teacher.user,
+                            chatId: cht.id
+                        })
+                    );
+                }
+                if (contacts) {
+                    const allReceivers = [...newReceivers, ...contacts.filter(cnt => newReceivers.filter(rc => rc.id === cnt.id).length === 0)]
+                    setAllReceivers(allReceivers);
+                } else {
+                    setAllReceivers(newReceivers);
+                }
+
+            })
+        }
+    }, [socket, sender, contacts]);
 
 
     const isXS = useMediaQuery(RTLTheme.breakpoints.down('sm'));
@@ -122,7 +132,8 @@ function ChatRoom({socket, sender, contacts, forTeacher = false}) {
 
                 }}>
                     {
-                        allReceivers.length !== 0 ?
+
+                        allReceivers && allReceivers.length !== 0 ?
                             <Stack sx={{height: '100%', width: '100%'}}>
                                 {
                                     allReceivers.map(rc =>

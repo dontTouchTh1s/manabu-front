@@ -31,6 +31,7 @@ import EditSection from "./Pages/EditSection/EditSection";
 import EditProfile from "./Pages/EditProfile/EditProfile";
 import StudentViewSection from "./Pages/StudentViewSection/StudentViewSection";
 import RecommendedCourses from "./Pages/RecommendedCourses/RecommendedCourses";
+import ChatRoomAllContact from "./Pages/ChatRoomAllContact/ChatRoomAllContact";
 
 
 const browserRouter = createBrowserRouter([
@@ -112,6 +113,11 @@ const browserRouter = createBrowserRouter([
                     {
                         path: '/teachers',
                         element: <ProtectedRoute><TeachersAll/></ProtectedRoute>,
+                        loader: protectedRouteLoader
+                    },
+                    {
+                        path: '/chat-room',
+                        element: <ProtectedRoute><ChatRoomAllContact/></ProtectedRoute>,
                         loader: protectedRouteLoader
                     },
                     {
