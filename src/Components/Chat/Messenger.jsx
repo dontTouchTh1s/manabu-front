@@ -47,7 +47,6 @@ function Messenger({socket, teacher, user, chatId, maxHeight = '400px', forTeach
 
     useEffect(() => {
         if (lastMessage.current) {
-            console.log(lastMessage)
             lastMessage.current.scrollIntoView({behavior: 'smooth'});
         }
     }, [messagesList]);

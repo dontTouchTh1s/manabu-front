@@ -14,6 +14,7 @@ import HandleExam from "../ManageCourse/HandleExam";
 import HandleSections from "./HandleSections";
 import ChatBox from "../../Components/ChatBox/ChatBox";
 import ChatIcon from "@mui/icons-material/Chat";
+import RTLTheme from "../../Themes/RTLTheme";
 
 function StudentCourseClass() {
     const {courseId} = useParams();
@@ -107,25 +108,50 @@ function StudentCourseClass() {
                         </Grid>
                     </Grid>
                 </Grid>
-                {
-                    !courseIsLoading ?
-                        <>
-                            <Fab color="primary" variant={'extended'} aria-label="گفت و گو با استاد"
-                                 sx={{position: 'fixed', bottom: 78}}
-                                 onClick={() => setChatBoxIsOpen(!chatBoxIsOpen)}
-                            >
-                                <ChatIcon/>
-                                <Typography component={'span'} variant={'body1'} sx={{ml: 1}}>
-                                    چت با استاد
-                                </Typography>
-                            </Fab>
-                            <ChatBox teacher={course.teacher} user={user.current.appBarUser} isOpen={chatBoxIsOpen}
-                                     onChange={(v) => setChatBoxIsOpen(v)}/>
-                        </>
-
-                        : ''
-                }
             </Container>
+            {
+                !courseIsLoading ?
+                    <>
+                        <Fab color="primary" variant={'extended'} aria-label="گفت و گو با استاد"
+                             sx={{
+                                 position: 'fixed',
+                                 [RTLTheme.breakpoints.down('md')]: {
+                                     bottom: 60,
+                                     left: 5,
+                                     transition: '300ms ease-in-out',
+                                     overflow: 'hidden',
+                                     maxWidth: 30,
+
+                                     '&:hover': {
+                                         maxWidth: 140,
+                                     },
+                                     '> span': {
+                                         display: 'none'
+                                     },
+                                     '&:hover > span': {
+                                         display: 'block'
+                                     }
+                                 },
+
+                                 [RTLTheme.breakpoints.up('md')]: {
+                                     bottom: 80,
+                                     left: 20,
+                                 },
+                             }}
+                             onClick={() => setChatBoxIsOpen(!chatBoxIsOpen)}
+                        >
+                            <ChatIcon fontSize={'small'}/>
+                            <Typography component={'span'} variant={'body1'} sx={{ml: 1}}>
+                                چت با استاد
+                            </Typography>
+
+                        </Fab>
+                        <ChatBox teacher={course.teacher} user={user.current.appBarUser} isOpen={chatBoxIsOpen}
+                                 onChange={(v) => setChatBoxIsOpen(v)}/>
+                    </>
+
+                    : ''
+            }
             <Snackbar
                 open={snackbarStatus.open}
                 autoHideDuration={6000}

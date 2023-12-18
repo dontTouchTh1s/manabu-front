@@ -14,10 +14,8 @@ function ShowExam({exam}) {
     const [file, setFile] = useState(null);
 
     async function handleDownload() {
-        console.log(exam);
         const response = await Api.get('/exams/download/' + exam.file.id + '/' + exam.file.format);
-        console.log(response)
-        
+
     }
 
 
@@ -47,13 +45,12 @@ function ShowExam({exam}) {
                         {
                             exam.file &&
                             <>
-                                <Button endIcon={<AttachFileIcon fontSize={'large'}/>} onClick={handleDownload}>
-                                    دانلود فایل
-                                </Button>
+
                                 <Link
                                     href={'http://localhost:8080/manabu/exams/download/' + exam.file.id + '/' + exam.file.format}>
-                                    <Box component={'img'} alt={'فایل امتحان'} sx={{maxWidth: '200px'}}
-                                         src={'http://localhost:8080/manabu/exams/download/' + exam.file.id + '/' + exam.file.format}/>
+                                    <Button endIcon={<AttachFileIcon fontSize={'large'}/>} onClick={handleDownload}>
+                                        دانلود فایل
+                                    </Button>
                                 </Link>
                             </>
                         }

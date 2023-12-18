@@ -60,19 +60,19 @@ function RecommendedCourses() {
                         }
 
                     </Grid>
-                    {
-                        user.current.appBarUser.teacher &&
-                        <Fab color="primary" variant={'extended'} aria-label="افزودن"
-                             onClick={() => {
-                                 navigate('/teachers/courses/create')
-                             }}
-                             sx={{position: 'fixed', bottom: 75}}
-                        >
-                            <AddIcon/>
-                            ایجاد دوره
-                        </Fab>
-                    }
                 </Container>
+                {
+                    user.current.appBarUser.teacher &&
+                    <Fab color="primary" variant={'extended'} aria-label="افزودن"
+                         onClick={() => {
+                             navigate('/teachers/courses/create')
+                         }}
+                         sx={{position: 'fixed', bottom: 75, right: 10}}
+                    >
+                        <AddIcon/>
+                        ایجاد دوره
+                    </Fab>
+                }
             </Box>
 
         </>

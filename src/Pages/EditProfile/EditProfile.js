@@ -89,7 +89,6 @@ function EditProfile() {
             setLoginLoading(false);
             setSnackbarOpen(true);
             setSnackbarMessage('در هنگام دریافت اطلاعات مشکلی پیش آمده است.');
-            console.log(error)
         }
     }
 

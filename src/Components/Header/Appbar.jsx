@@ -43,9 +43,7 @@ ElevationScroll.propTypes = {
 function MenuAppBar() {
     const user = useContext(userContext);
     const [appBarUser, setAppBarUser] = useState(null);
-
     user.current = {...user.current, appBarUser, setAppBarUser}
-
     return (
         <Box sx={{display: 'flex', justifyContent: 'center', flexGrow: 10, width: '100%'}}>
             <ElevationScroll>
@@ -56,20 +54,22 @@ function MenuAppBar() {
                     borderBottomRightRadius: 24,
                     borderBottomLeftRadius: 24,
                     [RTLTheme.breakpoints.down('sm')]: {
-                        width: '100%'
+                        width: '100%',
+                        borderBottomRightRadius: 0,
+                        borderBottomLeftRadius: 0
                     },
-                    [RTLTheme.breakpoints.down('md')]: {
+                    [RTLTheme.breakpoints.up('sm')]: {
                         maxWidth: RTLTheme.breakpoints.values.sm,
-                        width: '90%'
+                        width: '95%'
                     },
-                    [RTLTheme.breakpoints.down('lg')]: {
+                    [RTLTheme.breakpoints.up('md')]: {
                         maxWidth: RTLTheme.breakpoints.values.md,
                         width: '90%'
-
                     },
                     [RTLTheme.breakpoints.up('lg')]: {
                         maxWidth: RTLTheme.breakpoints.values.lg,
-                        width: '80%'
+                        width: '90%'
+
                     }
                 }}>
                     <Toolbar sx={{

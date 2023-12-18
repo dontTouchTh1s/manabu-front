@@ -83,20 +83,19 @@ function ManageSections({forStudents = false}) {
 
                     }
                 </Grid>
-                {
-                    !forStudents &&
-                    <Fab color="primary" variant={'extended'} aria-label="افزودن"
-                         onClick={() => {
-                             navigate('/teachers/courses/' + courseId + '/sections/create')
-                         }}
-                         sx={{position: 'fixed', bottom: 75}}
-                    >
-                        <AddIcon/>
-                        ایجاد جلسه
-                    </Fab>
-                }
-
             </Container>
+            {
+                !forStudents &&
+                <Fab color="primary" variant={'extended'} aria-label="افزودن"
+                     onClick={() => {
+                         navigate('/teachers/courses/' + courseId + '/sections/create')
+                     }}
+                     sx={{position: 'fixed', bottom: 75}}
+                >
+                    <AddIcon/>
+                    ایجاد جلسه
+                </Fab>
+            }
         </Box>
     );
 }

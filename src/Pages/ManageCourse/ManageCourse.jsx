@@ -176,7 +176,6 @@ function ManageCourse() {
         setSnackbarStatus({...snackbarStatus, open: false});
     }
 
-    console.log(chatBoxIsOpen)
     return (
         <Box>
             <Typography component="h1" variant="h4" sx={{textAlign: 'center'}}>

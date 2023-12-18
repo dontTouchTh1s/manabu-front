@@ -52,7 +52,6 @@ function ChatRoom({socket, sender, contacts, forTeacher = false}) {
             } else {
                 data = {userId: sender.id};
             }
-            console.log(data)
             chatList(data);
         }
     }, [socket]);

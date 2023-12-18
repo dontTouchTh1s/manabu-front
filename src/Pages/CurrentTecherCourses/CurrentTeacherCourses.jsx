@@ -46,15 +46,15 @@ function CurrentTeacherCourses() {
                     }
 
                 </Grid>
-                <Link to={'/teachers/courses/create'}>
-                    <Fab color="primary" variant={'extended'} aria-label="افزودن"
-                         sx={{position: 'fixed', bottom: 75}}
-                    >
-                        <AddIcon/>
-                        ایجاد دوره
-                    </Fab>
-                </Link>
             </Container>
+            <Link to={'/teachers/courses/create'}>
+                <Fab color="primary" variant={'extended'} aria-label="افزودن"
+                     sx={{position: 'fixed', bottom: 75}}
+                >
+                    <AddIcon/>
+                    ایجاد دوره
+                </Fab>
+            </Link>
         </Box>);
 }
 
