@@ -15,9 +15,9 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SchoolIcon from "@mui/icons-material/School";
 import CastForEducationIcon from '@mui/icons-material/CastForEducation';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import HomeIcon from "@mui/icons-material/Home";
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import RecommendIcon from '@mui/icons-material/Recommend';
+import ForumIcon from '@mui/icons-material/Forum';
 
 const drawerWidth = 240;
 
@@ -225,6 +225,36 @@ export default function MiniDrawer({isTeacher, isOpen, onChange}) {
                                     <RecommendIcon/>
                                 </ListItemIcon>
                                 <ListItemText primary={'دوره های پیشنهادی'} sx={{
+                                    opacity: open ? 1 : 0,
+                                    color: 'inherit'
+                                }}/>
+                            </ListItemButton>
+                        </Link>
+                        <Link
+                            onClick={handleDrawerClose}
+                            to={'/chat-room'}
+                            style={{
+                                textDecoration: 'none ',
+                                color: "inherit"
+                            }}
+                        >
+                            <ListItemButton
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        color: 'inherit',
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}>
+                                    <ForumIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary={'اتاق گفت و گو'} sx={{
                                     opacity: open ? 1 : 0,
                                     color: 'inherit'
                                 }}/>
