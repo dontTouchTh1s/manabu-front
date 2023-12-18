@@ -11,9 +11,10 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import LoadingCircle from "../../Components/LoadingCircle";
 import useCategories from "../../Hooks/useCategories";
+import userContext from "../../Contexts/UserContext";
 
 function CreateTeacher() {
     const navigate = useNavigate();
@@ -50,6 +51,8 @@ function CreateTeacher() {
         categoriesIsLoading: categoriesLoading
     } = useCategories();
 
+    const user = useContext(userContext);
+
     async function handleSubmit(e) {
         e.preventDefault();
         if (handleFormError())
@@ -76,6 +79,10 @@ function CreateTeacher() {
                     message: 'ثبت نام شما با موفقیت انجام شد، ازین پس میتوانید دوره های آموزشی ایجاد کنید.',
                     type: 'success'
                 });
+                const newUser = user.current.appBarUser;
+                newUser.teacher = response.data.teacher;
+                user.current.setAppBarUser(newUser);
+                user.current.setNavigationMenuUser(newUser);
                 navigate('/courses');
             } else {
                 setSnackbarStatus({
