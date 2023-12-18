@@ -31,6 +31,7 @@ import useCourse from "../../Hooks/useCourse";
 import useExam from "../../Hooks/useExam";
 import ShowExam from "./ShowExam";
 import HandleExam from "./HandleExam";
+import ChatBox from "../../Components/ChatBox/ChatBox";
 
 async function studentsFetcher(url) {
     return Api.get(url).then(response => response.data.users);
@@ -39,6 +40,8 @@ async function studentsFetcher(url) {
 
 function ManageCourse() {
     const {courseId} = useParams();
+    const [chatBoxIsOpen, setChatBoxIsOpen] = useState(false);
+    const [currentChatUser, setCurrentChatUser] = useState(null);
 
     const {
         course,
@@ -88,7 +91,7 @@ function ManageCourse() {
     const {
         data: students,
         isLoading: studentsIsLoading
-    } = useSWRImmutable('/teacherCourses/' + courseId + '/1000/0', studentsFetcher, {revalidateOnMount: true});
+    } = useSWRImmutable('/teacherCourses/' + courseId + '/4/0', studentsFetcher, {revalidateOnMount: true});
 
     const user = useContext(UserContext);
 
@@ -173,6 +176,7 @@ function ManageCourse() {
         setSnackbarStatus({...snackbarStatus, open: false});
     }
 
+    console.log(chatBoxIsOpen)
     return (
         <Box>
             <Typography component="h1" variant="h4" sx={{textAlign: 'center'}}>
@@ -263,11 +267,21 @@ function ManageCourse() {
                             </Divider>
                         </Grid>
                         <Grid xs={12} container spacing={{xs: 2, md: 3}}>
+                            <Grid xs={12}>
+                                <Typography component={'p'} variant={'body1'} color={'unImportant.main'}>
+                                    برای شروع گفت و گو میتوانید روی دانشجویان کلیک کنید.
+                                </Typography>
+                            </Grid>
                             {
                                 !studentsIsLoading ?
                                     students.length !== 0 ?
                                         students.map(std =>
-                                            <Grid key={std.id} xs={6} sm={4} md={3}>
+                                            <Grid key={std.id} xs={6} sm={4} md={3}
+                                                  onClick={() => {
+                                                      setCurrentChatUser(std.user);
+                                                      setChatBoxIsOpen(true);
+                                                  }}
+                                                  sx={{cursor: 'pointer'}}>
                                                 <StudentCard student={std}/>
                                             </Grid>) :
                                         <Grid xs={12}>
@@ -286,6 +300,21 @@ function ManageCourse() {
                                         </Grid>
                                     </>
                             }
+                        </Grid>
+                        <Grid xs={12} sm={6} md={4}>
+                            {
+                                currentChatUser &&
+                                <ChatBox
+                                    teacher={{user: user.current.appBarUser, id: user.current.appBarUser.id}}
+                                    user={currentChatUser}
+                                    isOpen={chatBoxIsOpen} forTeacher onChange={(v) => setChatBoxIsOpen(v)}/>
+                            }
+                            <Link to={'./chat-room'}>
+                                <Button variant={'contained'}>
+                                    چت با همه دانشجویان دوره
+                                </Button>
+
+                            </Link>
                         </Grid>
 
                     </Grid>
