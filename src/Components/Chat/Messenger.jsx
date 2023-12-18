@@ -52,6 +52,12 @@ function Messenger({socket, teacher, user, chatId, maxHeight = '400px', forTeach
         }
     }, [messagesList]);
 
+    function handleKey(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
     return (
         <>
             <Box sx={{
@@ -86,6 +92,7 @@ function Messenger({socket, teacher, user, chatId, maxHeight = '400px', forTeach
             <TextField
                 placeholder={'متن پیام'}
                 fullWidth
+                onKeyDown={handleKey}
                 value={currentMessage}
                 onChange={(e) => setCurrentMessage(e.target.value)}
                 InputProps={{
