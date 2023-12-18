@@ -12,6 +12,7 @@ import SectionsCard from "./SectionsCard";
 import AddIcon from '@mui/icons-material/Add';
 import NotDataBox from "../../Components/NotDataBox";
 import useCourse from "../../Hooks/useCourse";
+import RTLTheme from "../../Themes/RTLTheme";
 
 async function fetcher(url) {
     return Api.get(url).then(response => response.data.sections);
@@ -90,7 +91,31 @@ function ManageSections({forStudents = false}) {
                      onClick={() => {
                          navigate('/teachers/courses/' + courseId + '/sections/create')
                      }}
-                     sx={{position: 'fixed', bottom: 75}}
+                     sx={{
+                         position: 'fixed',
+                         [RTLTheme.breakpoints.down('md')]: {
+                             bottom: 60,
+                             left: 5,
+                             transition: '300ms ease-in-out',
+                             overflow: 'hidden',
+                             maxWidth: 30,
+
+                             '&:hover': {
+                                 maxWidth: 140,
+                             },
+                             '> span': {
+                                 display: 'none'
+                             },
+                             '&:hover > span': {
+                                 display: 'block'
+                             }
+                         },
+
+                         [RTLTheme.breakpoints.up('md')]: {
+                             bottom: 80,
+                             left: 20,
+                         },
+                     }}
                 >
                     <AddIcon/>
                     ایجاد جلسه

@@ -8,6 +8,7 @@ import {useContext} from "react";
 import userContext from "../../Contexts/UserContext";
 import AddIcon from "@mui/icons-material/Add";
 import {Link} from "react-router-dom";
+import RTLTheme from "../../Themes/RTLTheme";
 
 async function fetcher([url, params]) {
     return Api.post(url, params).then(response => response.data.courses.courses);
@@ -49,7 +50,31 @@ function CurrentTeacherCourses() {
             </Container>
             <Link to={'/teachers/courses/create'}>
                 <Fab color="primary" variant={'extended'} aria-label="افزودن"
-                     sx={{position: 'fixed', bottom: 75}}
+                     sx={{
+                         position: 'fixed',
+                         [RTLTheme.breakpoints.down('md')]: {
+                             bottom: 60,
+                             left: 5,
+                             transition: '300ms ease-in-out',
+                             overflow: 'hidden',
+                             maxWidth: 30,
+
+                             '&:hover': {
+                                 maxWidth: 140,
+                             },
+                             '> span': {
+                                 display: 'none'
+                             },
+                             '&:hover > span': {
+                                 display: 'block'
+                             }
+                         },
+
+                         [RTLTheme.breakpoints.up('md')]: {
+                             bottom: 80,
+                             left: 20,
+                         },
+                     }}
                 >
                     <AddIcon/>
                     ایجاد دوره

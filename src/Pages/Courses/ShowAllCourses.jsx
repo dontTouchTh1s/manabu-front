@@ -22,6 +22,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from "@mui/icons-material/Add";
 import {useNavigate, useParams} from "react-router-dom";
 import userContext from "../../Contexts/UserContext";
+import RTLTheme from "../../Themes/RTLTheme";
 
 async function searcher([url, params]) {
     return Api.post(url, params).then(response => response.data.courses.courses);
@@ -209,7 +210,31 @@ function Courses() {
                          onClick={() => {
                              navigate('/teachers/courses/create')
                          }}
-                         sx={{position: 'fixed', bottom: 75}}
+                         sx={{
+                             position: 'fixed',
+                             [RTLTheme.breakpoints.down('md')]: {
+                                 bottom: 60,
+                                 left: 5,
+                                 transition: '300ms ease-in-out',
+                                 overflow: 'hidden',
+                                 maxWidth: 30,
+
+                                 '&:hover': {
+                                     maxWidth: 140,
+                                 },
+                                 '> span': {
+                                     display: 'none'
+                                 },
+                                 '&:hover > span': {
+                                     display: 'block'
+                                 }
+                             },
+
+                             [RTLTheme.breakpoints.up('md')]: {
+                                 bottom: 80,
+                                 left: 20,
+                             },
+                         }}
                     >
                         <AddIcon/>
                         ایجاد دوره
