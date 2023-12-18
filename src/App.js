@@ -47,7 +47,7 @@ function App() {
                     <Box pb={8} pt={2}>
                         {
                             location.pathname !== '/' &&
-                            <Container maxWidth={'md'} sx={{my: 2}}>
+                            <Container maxWidth={'md'} sx={{mb: 2, mt: 8}}>
                                 <Grid container sx={{display: 'flex', alignItems: 'center'}}>
                                     <Grid xs={1} sx={{display: 'flex', justifyContent: 'left'}}>
                                         <IconButton onClick={() => navigate(1)}>
